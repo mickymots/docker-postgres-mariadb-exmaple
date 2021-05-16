@@ -41,7 +41,7 @@ def hello_pg():
 @app.route('/maria')
 def hello_maria():
     # Connect to MariaDB Platform
-    message = 'default message'
+    message = ''
     try:
        
         conn = pyodbc.connect('DRIVER={MySQL};Server=maria_db;Port=3306;UserName=root;Password=something;String Types=Unicode')
@@ -52,7 +52,7 @@ def hello_maria():
         
         cursor = conn.cursor()
         cursor.execute("SELECT version();") 
-        message = 'before running        '
+        
         
         for row in cursor:
             print(f"row{row[0]}") 
