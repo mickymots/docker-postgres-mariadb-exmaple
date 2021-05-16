@@ -11,13 +11,39 @@ RUN /pyenv/bin/pip install pydrill
 # postgres driver added  
 RUN apk add psqlodbc
 
+
+
+
+# #MariaDB driver
+# RUN apk add --no-cache mariadb mariadb-client pwgen bash nano unixodbc unixodbc-dev && \
+#     rm -f /var/cache/apk/*
+
+# ADD files/run.sh /scripts/run.sh
+# ADD files/lib/libmaodbc.so /lib/libmaodbc.so
+
+# option 2 
+# RUN echo 'http://mirror.reenigne.net/alpine/edge/testing' >> /etc/apk/repositories
+# RUN apk add mariadb-connector-odbc
+
+# option 3
+WORKDIR /home/anaconda
+COPY mysql-connector-odbc-5.3.14-linux-glibc2.12-x86-64bit.tar.gz .
+RUN gunzip mysql-connector-odbc-5.3.14-linux-glibc2.12-x86-64bit.tar.gz
+RUN tar xvf mysql-connector-odbc-5.3.14-linux-glibc2.12-x86-64bit.tar
+
+WORKDIR /home/anaconda/mysql-connector-odbc-5.3.14-linux-glibc2.12-x86-64bit
+RUN cp bin/* /usr/local/bin
+RUN cp lib/* /usr/local/lib
+
+
 # postgres odbc config file
-WORKDIR /etc
-COPY odbcinst.ini .
+WORKDIR /home/anaconda
 
-#MariaDB driver
-RUN /pyenv/bin/pip install mysql-connector-python
+RUN cat /etc/odbcinst.ini
 
+COPY odbcinst.ini /usr/local/etc/odbcinst.ini
+RUN rm /etc/odbcinst.ini
+RUN ln -s /usr/local/etc/odbcinst.ini /etc/odbcinst.ini
 
 WORKDIR /home/anaconda
 COPY app.py .

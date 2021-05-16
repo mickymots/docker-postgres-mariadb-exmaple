@@ -34,22 +34,25 @@ def hello_pg():
 
     return f'Hey, we have Flask in a Docker container! {message}'
 
-import mysql.connector as database
+# import mysql.connector as database
+
+# import mariadb as database
 
 @app.route('/maria')
 def hello_maria():
     # Connect to MariaDB Platform
     message = 'default message'
     try:
-        conn = database.connect(
-            user="root",
-            password="something",
-            host="maria_db",
-            port=3306,
-        )
+       
+        conn = pyodbc.connect('DRIVER={MySQL};Server=maria_db;Port=3306;UserName=root;Password=something;String Types=Unicode')
+
+        conn.setencoding(encoding='utf-8')
+        conn.setdecoding(pyodbc.SQL_CHAR, encoding='utf-8')
+        conn.setdecoding(pyodbc.SQL_WCHAR, encoding='utf-8')
+        
         cursor = conn.cursor()
         cursor.execute("SELECT version();") 
-        message = 'before running 2'
+        message = 'before running        '
         
         for row in cursor:
             print(f"row{row[0]}") 
@@ -57,6 +60,7 @@ def hello_maria():
 
         # /message = "after running query"
     except Exception as e:
+        print(traceback.format_exc())
         print(f"Error connecting to MariaDB Platform: {e}")
         mesaage = 'some errror '
         
