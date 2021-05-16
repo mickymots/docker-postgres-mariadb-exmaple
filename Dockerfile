@@ -28,8 +28,6 @@ RUN cp lib/* /usr/local/lib
 # postgres odbc config file
 WORKDIR /home/anaconda
 
-RUN cat /etc/odbcinst.ini
-
 COPY odbcinst.ini /usr/local/etc/odbcinst.ini
 RUN rm /etc/odbcinst.ini
 RUN ln -s /usr/local/etc/odbcinst.ini /etc/odbcinst.ini
