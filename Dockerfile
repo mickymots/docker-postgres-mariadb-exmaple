@@ -14,18 +14,7 @@ RUN apk add psqlodbc
 
 
 
-# #MariaDB driver
-# RUN apk add --no-cache mariadb mariadb-client pwgen bash nano unixodbc unixodbc-dev && \
-#     rm -f /var/cache/apk/*
-
-# ADD files/run.sh /scripts/run.sh
-# ADD files/lib/libmaodbc.so /lib/libmaodbc.so
-
-# option 2 
-# RUN echo 'http://mirror.reenigne.net/alpine/edge/testing' >> /etc/apk/repositories
-# RUN apk add mariadb-connector-odbc
-
-# option 3
+# MariaDB driver
 WORKDIR /home/anaconda
 COPY mysql-connector-odbc-5.3.14-linux-glibc2.12-x86-64bit.tar.gz .
 RUN gunzip mysql-connector-odbc-5.3.14-linux-glibc2.12-x86-64bit.tar.gz
